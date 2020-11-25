@@ -9,7 +9,7 @@ import java.awt.*;
 import java.time.LocalDate;
 import java.util.concurrent.BlockingQueue;
 
-public class View {
+public class View extends JFrame{
     private JFrame frame;
     private BlockingQueue<Message> queue;
     private JPanel panel;
@@ -27,18 +27,38 @@ public class View {
         // JFrame should be able to add Messages to queue
         // JFrame can be in a separate class or created JFrame with all the elements in this class
         // or you can make View a subclass of JFrame by extending it
-        frame = new JFrame();
+
+        setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
 
         JButton prevMonth = new JButton("Prev");
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 0.5;
+        c.gridx = 0;
+        c.gridy = 0;
+        add(prevMonth, c);
+
+        JButton curMonth = new JButton("curMonth");
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 0.5;
+        c.gridx = 1;
+        c.gridy = 0;
+        add(curMonth, c);
+
+
         JButton nextMonth = new JButton("Next");
-        frame.add(prevMonth);
-        frame.add(nextMonth);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 0.5;
+        c.gridx = 2;
+        c.gridy = 0;
+        add(nextMonth, c);
 
-        printTitle(frame);
-
-        printPrevMonth(frame, date);
-        printDate(frame, date);
-        printNextMonth(frame, date);
+        JPanel calPanel = new JPanel();
+        calPanel.setLayout(new GridLayout(0, 7,1,1));
+        printTitle(calPanel);
+        printPrevMonth(calPanel, date);
+        printDate(calPanel, date);
+        printNextMonth(calPanel, date);
 
 
         prevMonth.addActionListener(event -> {
@@ -49,7 +69,7 @@ public class View {
             }
         });
 
-        prevMonth.addActionListener(event -> {
+        nextMonth.addActionListener(event -> {
             try {
                 this.queue.put(new NewMessage()); // <--- adding Hit message to the queue
             } catch (InterruptedException e) {
@@ -59,13 +79,21 @@ public class View {
 
         // add everything and set layout and other standard JFrame settings
 
-
-        frame.pack();
-
-        frame.setLayout(new GridLayout(0, 7,1,1));
-        frame.setSize(800,500);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.ipady = 0;
+        c.weightx = 5;
+        //c.weighty = 5;
+        c.gridwidth = 3;
+        c.gridx = 0;
+        c.gridy = 5;
+        c.anchor = GridBagConstraints.PAGE_START;
+        c.insets = new Insets(30,0,0,0);
+        add(calPanel, c);
+        pack();
+        setTitle("Calendar&ToDoList");
+        setSize(800,500);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
     }
 
 
@@ -80,17 +108,17 @@ public class View {
     }
 
 
-    private void printTitle(JFrame frame) {
+    private void printTitle(JPanel calPanel) {
         for (DayOfWeek dayOfWeek : DayOfWeek.values()) {
             String str = dayOfWeek.toString();
             JLabel label = new JLabel(str);
             label.setHorizontalAlignment(JLabel.CENTER);
             label.setVerticalAlignment(JLabel.CENTER);
-            frame.add(label);
+            calPanel.add(label);
         }
     }
 
-    private void printPrevMonth(JFrame frame, LocalDate date) {
+    private void printPrevMonth(JPanel jPanel, LocalDate date) {
         int firstDayOfMonth = date.getDayOfWeek().getValue();
         if (firstDayOfMonth != 7) {
             for (int i = 0; i < firstDayOfMonth; i++) {
@@ -101,14 +129,14 @@ public class View {
     }
 
 
-    private void printDate(JFrame frame, LocalDate date) {
+    private void printDate(JPanel jPanel, LocalDate date) {
         for (int i = 1; i <= 31; i++) {
             JButton button = new JButton(String.valueOf(i));
-            frame.add(button);
+            jPanel.add(button);
         }
     }
 
-    private void printNextMonth(JFrame frame, LocalDate date) {
+    private void printNextMonth(JPanel jPanel, LocalDate date) {
 
     }
 }
