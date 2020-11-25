@@ -1,15 +1,19 @@
 package view;
 
+import model.DayOfWeek;
 import model.Message;
 import model.NewMessage;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDate;
 import java.util.concurrent.BlockingQueue;
 
 public class View {
     private JFrame frame;
     private BlockingQueue<Message> queue;
+    private  JPanel panel;
+    private LocalDate date;
 
     public static View init(BlockingQueue<Message> queue) {
         // Create object of type view
@@ -27,6 +31,8 @@ public class View {
 
         JButton newGame = new JButton("New Game");
         JButton hitButton = new JButton("hit");
+        printTitle(frame);
+        printDate(frame, date);
 
         newGame.addActionListener(event -> {
             try {
@@ -45,10 +51,12 @@ public class View {
         });
 
         // add everything and set layout and other standard JFrame settings
-        frame.add(newGame);
-        frame.add(hitButton);
+      //  frame.add(newGame);
+       // frame.add(hitButton);
         frame.pack();
-        frame.setLayout(new FlowLayout());
+
+        frame.setLayout(new GridLayout(0, 7,1,1));
+        frame.setSize(800,500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
@@ -62,5 +70,21 @@ public class View {
     public void dispose() {
         // TODO: clear all the resources
         // for example, gameFrame.dispose();
+    }
+
+    private void printTitle(JFrame frame) {
+        for (DayOfWeek dayOfWeek : DayOfWeek.values()) {
+            String str = dayOfWeek.toString();
+            JLabel label = new JLabel(str);
+            label.setHorizontalAlignment(JLabel.CENTER);
+            label.setVerticalAlignment(JLabel.CENTER);
+            frame.add(label);
+        }
+    }
+    private void printDate(JFrame frame, LocalDate date) {
+        for (int i = 1; i <= 35; i++) {
+            JButton button = new JButton(String.valueOf(i));
+            frame.add(button);
+        }
     }
 }

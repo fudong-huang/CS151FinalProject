@@ -16,7 +16,7 @@ class CalendarIntegrateToDoListDemo {
         view = View.init(queue);
         model = new Model();
         Controller controller = new Controller(view, model, queue);
-        controller.mainLoop();
+        System.out.println(123);
         view.dispose();
         queue.clear();
     }
