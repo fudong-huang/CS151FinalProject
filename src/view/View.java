@@ -13,7 +13,7 @@ public class View extends JFrame{
     private JFrame frame;
     private BlockingQueue<Message> queue;
     private JPanel panel;
-    private LocalDate date = LocalDate.now();
+    private LocalDate date = LocalDate.of(2020, 10, 5);
 
     public static View init(BlockingQueue<Message> queue) {
         // Create object of type view
@@ -22,11 +22,6 @@ public class View extends JFrame{
 
     private View(BlockingQueue<Message> queue) {
         this.queue = queue;
-        // TODO:
-        // you should initalize JFrame and show it,
-        // JFrame should be able to add Messages to queue
-        // JFrame can be in a separate class or created JFrame with all the elements in this class
-        // or you can make View a subclass of JFrame by extending it
 
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -38,7 +33,7 @@ public class View extends JFrame{
         c.gridy = 0;
         add(prevMonth, c);
 
-        JButton curMonth = new JButton("curMonth");
+        JButton curMonth = new JButton(date.getMonth().getValue() + "-" + date.getDayOfMonth() + "-" + date.getYear());
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0.5;
         c.gridx = 1;
@@ -55,6 +50,7 @@ public class View extends JFrame{
 
         JPanel calPanel = new JPanel();
         calPanel.setLayout(new GridLayout(0, 7,1,1));
+
         printTitle(calPanel);
         printPrevMonth(calPanel, date);
         printDate(calPanel, date);
@@ -119,12 +115,22 @@ public class View extends JFrame{
     }
 
     private void printPrevMonth(JPanel jPanel, LocalDate date) {
-        int firstDayOfMonth = date.getDayOfWeek().getValue();
-        if (firstDayOfMonth != 7) {
-            for (int i = 0; i < firstDayOfMonth; i++) {
-                date = date.minusDays(1);
+        LocalDate firstDayOfMonth = LocalDate.of(date.getYear(), date.getMonth(), 1);;
+        int firstDay = firstDayOfMonth.getDayOfWeek().getValue();
+        if (firstDay != 7) {
+            System.out.println(firstDay);
+            for (int i = 0; i < firstDay; i++) {
+                firstDayOfMonth = firstDayOfMonth.minusDays(1);
             }
 
+            for(int i = 0; i < firstDay; i++) {
+                JLabel label = new JLabel(Integer.toString(firstDayOfMonth.getDayOfMonth()));
+                label.setForeground(Color.GRAY);
+                label.setHorizontalAlignment(JLabel.CENTER);
+                label.setVerticalAlignment(JLabel.CENTER);
+                jPanel.add(label);
+                firstDayOfMonth = firstDayOfMonth.plusDays(1);
+            }
         }
     }
 
