@@ -12,8 +12,8 @@ import java.util.concurrent.BlockingQueue;
 public class View {
     private JFrame frame;
     private BlockingQueue<Message> queue;
-    private  JPanel panel;
-    private LocalDate date;
+    private JPanel panel;
+    private LocalDate date = LocalDate.now();
 
     public static View init(BlockingQueue<Message> queue) {
         // Create object of type view
@@ -29,12 +29,19 @@ public class View {
         // or you can make View a subclass of JFrame by extending it
         frame = new JFrame();
 
-        JButton newGame = new JButton("New Game");
-        JButton hitButton = new JButton("hit");
-        printTitle(frame);
-        printDate(frame, date);
+        JButton prevMonth = new JButton("Prev");
+        JButton nextMonth = new JButton("Next");
+        frame.add(prevMonth);
+        frame.add(nextMonth);
 
-        newGame.addActionListener(event -> {
+        printTitle(frame);
+
+        printPrevMonth(frame, date);
+        printDate(frame, date);
+        printNextMonth(frame, date);
+
+
+        prevMonth.addActionListener(event -> {
             try {
                 this.queue.put(new NewMessage()); // <--- adding NewGame message to the queue
             } catch (InterruptedException e) {
@@ -42,7 +49,7 @@ public class View {
             }
         });
 
-        hitButton.addActionListener(event -> {
+        prevMonth.addActionListener(event -> {
             try {
                 this.queue.put(new NewMessage()); // <--- adding Hit message to the queue
             } catch (InterruptedException e) {
@@ -51,8 +58,8 @@ public class View {
         });
 
         // add everything and set layout and other standard JFrame settings
-      //  frame.add(newGame);
-       // frame.add(hitButton);
+
+
         frame.pack();
 
         frame.setLayout(new GridLayout(0, 7,1,1));
@@ -72,6 +79,7 @@ public class View {
         // for example, gameFrame.dispose();
     }
 
+
     private void printTitle(JFrame frame) {
         for (DayOfWeek dayOfWeek : DayOfWeek.values()) {
             String str = dayOfWeek.toString();
@@ -81,10 +89,26 @@ public class View {
             frame.add(label);
         }
     }
+
+    private void printPrevMonth(JFrame frame, LocalDate date) {
+        int firstDayOfMonth = date.getDayOfWeek().getValue();
+        if (firstDayOfMonth != 7) {
+            for (int i = 0; i < firstDayOfMonth; i++) {
+                date = date.minusDays(1);
+            }
+
+        }
+    }
+
+
     private void printDate(JFrame frame, LocalDate date) {
-        for (int i = 1; i <= 35; i++) {
+        for (int i = 1; i <= 31; i++) {
             JButton button = new JButton(String.valueOf(i));
             frame.add(button);
         }
+    }
+
+    private void printNextMonth(JFrame frame, LocalDate date) {
+
     }
 }
