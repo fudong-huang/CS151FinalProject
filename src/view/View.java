@@ -11,83 +11,26 @@ public class View extends JFrame{
     private JFrame frame;
     private BlockingQueue<Message> queue;
     private JPanel panel;
-    private LocalDate date = LocalDate.of(2020, 9, 5);
+    private LocalDate date;
     // count for the calendar button;
 
 
-    public static View init(BlockingQueue<Message> queue) {
+    public static View init(BlockingQueue<Message> queue,LocalDate date) {
         // Create object of type view
-        return new View(queue);
+        return new View(queue, date);
     }
 
-    private View(BlockingQueue<Message> queue) {
+    private View(BlockingQueue<Message> queue, LocalDate date) {
+        this.date = date;
         this.queue = queue;
-        setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
+        this.frame = new JFrame();
 
-        JButton prevMonth = new JButton("Prev");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 0.5;
-        c.gridx = 0;
-        c.gridy = 0;
-        add(prevMonth, c);
-
-        JButton curMonth = new JButton(date.getMonth().getValue() + "-" + date.getDayOfMonth() + "-" + date.getYear());
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 0.5;
-        c.gridx = 1;
-        c.gridy = 0;
-        add(curMonth, c);
-
-
-        JButton nextMonth = new JButton("Next");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 0.5;
-        c.gridx = 2;
-        c.gridy = 0;
-        add(nextMonth, c);
-
-        JPanel calPanel = new JPanel();
-        calPanel.setLayout(new GridLayout(0, 7,1,1));
-        int[] count = {1};
-        printTitle(calPanel);
-        printPrevMonth(calPanel, date, count);
-        printDate(calPanel, date, count);
-        printNextMonth(calPanel, date, count);
-
-
-        prevMonth.addActionListener(event -> {
-            try {
-                this.queue.put(new PrevMonthMessage()); // <--- adding NewGame message to the queue
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-
-        nextMonth.addActionListener(event -> {
-            try {
-                this.queue.put(new NextMonthMessage()); // <--- adding Hit message to the queue
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-
-        // add everything and set layout and other standard JFrame settings
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.ipady = 0;
-        c.weightx = 5;
-        //c.weighty = 5;
-        c.gridwidth = 3;
-        c.gridx = 0;
-        c.gridy = 5;
-        c.anchor = GridBagConstraints.PAGE_START;
-        c.insets = new Insets(30,0,0,0);
-        add(calPanel, c);
-        pack();
-        setTitle("Calendar&ToDoList");
-        setSize(800,500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
+        paint();
+        frame.pack();
+        frame.setTitle("Calendar&ToDoList");
+        frame.setSize(800,500);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
     }
 
 
@@ -134,7 +77,7 @@ public class View extends JFrame{
     }
 
 
-    private void printDate(JPanel jPanel, LocalDate datem, int[] count) {
+    private void printDate(JPanel jPanel, LocalDate date, int[] count) {
         LocalDate firstDayOfMonth = LocalDate.of(date.getYear(), date.getMonth(), 1);
         int curMonth = date.getMonthValue();
         while (curMonth == firstDayOfMonth.getMonthValue()) {
@@ -157,4 +100,80 @@ public class View extends JFrame{
             i++;
         }
     }
+
+    public LocalDate getLocalDate() {
+        return this.date;
+    }
+
+    public void update(LocalDate date) {
+       frame.getContentPane().removeAll();
+        this.date = date;
+        paint();
+        System.out.println("calling repaint");
+        frame.getContentPane().revalidate();
+        frame.repaint();
+    }
+
+    private void paint() {
+        frame.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        JButton prevMonth = new JButton("Prev");
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 0.5;
+        c.gridx = 0;
+        c.gridy = 0;
+        frame.add(prevMonth, c);
+
+        JButton curMonth = new JButton(date.getMonth().getValue() + "-" + date.getDayOfMonth() + "-" + date.getYear());
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 0.5;
+        c.gridx = 1;
+        c.gridy = 0;
+        frame.add(curMonth, c);
+
+
+        JButton nextMonth = new JButton("Next");
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 0.5;
+        c.gridx = 2;
+        c.gridy = 0;
+        frame.add(nextMonth, c);
+
+        prevMonth.addActionListener(event -> {
+            try {
+                this.queue.put(new PrevMonthMessage()); // <--- adding NewGame message to the queue
+                System.out.println("qsize: " + queue.size() );
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        nextMonth.addActionListener(event -> {
+            try {
+                this.queue.put(new NextMonthMessage()); // <--- adding Hit message to the queue
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        JPanel calPanel = new JPanel();
+        calPanel.setLayout(new GridLayout(0, 7,1,1));
+        int[] count = {1};
+        printTitle(calPanel);
+        printPrevMonth(calPanel, date, count);
+        printDate(calPanel, date, count);
+        printNextMonth(calPanel, date, count);
+        // add everything and set layout and other standard JFrame settings
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.ipady = 0;
+        c.weightx = 5;
+        //c.weighty = 5;
+        c.gridwidth = 3;
+        c.gridx = 0;
+        c.gridy = 5;
+        c.anchor = GridBagConstraints.PAGE_START;
+        c.insets = new Insets(30,0,0,0);
+        frame.add(calPanel, c);
+    }
+
 }
