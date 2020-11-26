@@ -12,6 +12,7 @@ public class View extends JFrame{
     private BlockingQueue<Message> queue;
     private JPanel panel;
     private LocalDate date;
+    private LocalDate selectedDate;
     // count for the calendar button;
 
 
@@ -24,7 +25,7 @@ public class View extends JFrame{
         this.date = date;
         this.queue = queue;
         this.frame = new JFrame();
-
+        selectedDate = date;
         paint();
         frame.pack();
         frame.setTitle("Calendar&ToDoList");
@@ -82,6 +83,16 @@ public class View extends JFrame{
         int curMonth = date.getMonthValue();
         while (curMonth == firstDayOfMonth.getMonthValue()) {
             JButton button = new JButton(String.valueOf(firstDayOfMonth.getDayOfMonth()));
+            button.addActionListener(event -> {
+                try {
+                    queue.put(new ToDoListMessage()); // <--- adding NewGame message to the queue
+                    selectedDate = LocalDate.of(date.getYear(), date.getMonth(), Integer.parseInt(button.getText()));
+                    System.out.println(selectedDate.toString());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+
             jPanel.add(button);
             firstDayOfMonth = firstDayOfMonth.plusDays(1);
             count[0]++;

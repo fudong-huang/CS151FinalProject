@@ -43,7 +43,12 @@ public class Controller {
             date = date.minusMonths(1);
             System.out.println(date.toString());
             view.update(date);
-
+        } else if (message instanceof NextMonthMessage) {
+            System.out.println("nextMonth");
+            LocalDate date = view.getLocalDate();
+            date = date.plusMonths(1);
+            System.out.println(date.toString());
+            view.update(date);
         }
     }
 }
