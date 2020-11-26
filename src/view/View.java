@@ -1,8 +1,6 @@
 package view;
 
-import model.DayOfWeek;
-import model.Message;
-import model.NewMessage;
+import model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +11,9 @@ public class View extends JFrame{
     private JFrame frame;
     private BlockingQueue<Message> queue;
     private JPanel panel;
-    private LocalDate date = LocalDate.of(2020, 10, 5);
+    private LocalDate date = LocalDate.of(2020, 9, 5);
+    // count for the calendar button;
+
 
     public static View init(BlockingQueue<Message> queue) {
         // Create object of type view
@@ -22,7 +22,6 @@ public class View extends JFrame{
 
     private View(BlockingQueue<Message> queue) {
         this.queue = queue;
-
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
@@ -50,16 +49,16 @@ public class View extends JFrame{
 
         JPanel calPanel = new JPanel();
         calPanel.setLayout(new GridLayout(0, 7,1,1));
-
+        int[] count = {1};
         printTitle(calPanel);
-        printPrevMonth(calPanel, date);
-        printDate(calPanel, date);
-        printNextMonth(calPanel, date);
+        printPrevMonth(calPanel, date, count);
+        printDate(calPanel, date, count);
+        printNextMonth(calPanel, date, count);
 
 
         prevMonth.addActionListener(event -> {
             try {
-                this.queue.put(new NewMessage()); // <--- adding NewGame message to the queue
+                this.queue.put(new PrevMonthMessage()); // <--- adding NewGame message to the queue
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -67,14 +66,13 @@ public class View extends JFrame{
 
         nextMonth.addActionListener(event -> {
             try {
-                this.queue.put(new NewMessage()); // <--- adding Hit message to the queue
+                this.queue.put(new NextMonthMessage()); // <--- adding Hit message to the queue
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         });
 
         // add everything and set layout and other standard JFrame settings
-
         c.fill = GridBagConstraints.HORIZONTAL;
         c.ipady = 0;
         c.weightx = 5;
@@ -114,8 +112,8 @@ public class View extends JFrame{
         }
     }
 
-    private void printPrevMonth(JPanel jPanel, LocalDate date) {
-        LocalDate firstDayOfMonth = LocalDate.of(date.getYear(), date.getMonth(), 1);;
+    private void printPrevMonth(JPanel jPanel, LocalDate date, int[] count) {
+        LocalDate firstDayOfMonth = LocalDate.of(date.getYear(), date.getMonth(), 1);
         int firstDay = firstDayOfMonth.getDayOfWeek().getValue();
         if (firstDay != 7) {
             System.out.println(firstDay);
@@ -130,19 +128,33 @@ public class View extends JFrame{
                 label.setVerticalAlignment(JLabel.CENTER);
                 jPanel.add(label);
                 firstDayOfMonth = firstDayOfMonth.plusDays(1);
+                count[0]++;
             }
         }
     }
 
 
-    private void printDate(JPanel jPanel, LocalDate date) {
-        for (int i = 1; i <= 31; i++) {
-            JButton button = new JButton(String.valueOf(i));
+    private void printDate(JPanel jPanel, LocalDate datem, int[] count) {
+        LocalDate firstDayOfMonth = LocalDate.of(date.getYear(), date.getMonth(), 1);
+        int curMonth = date.getMonthValue();
+        while (curMonth == firstDayOfMonth.getMonthValue()) {
+            JButton button = new JButton(String.valueOf(firstDayOfMonth.getDayOfMonth()));
             jPanel.add(button);
+            firstDayOfMonth = firstDayOfMonth.plusDays(1);
+            count[0]++;
         }
     }
 
-    private void printNextMonth(JPanel jPanel, LocalDate date) {
-
+    private void printNextMonth(JPanel jPanel, LocalDate date, int[] count) {
+        int i = 1;
+        while (count[0] <= 35) {
+            JLabel label = new JLabel(String.valueOf(i));
+            label.setForeground(Color.GRAY);
+            label.setHorizontalAlignment(JLabel.CENTER);
+            label.setVerticalAlignment(JLabel.CENTER);
+            jPanel.add(label);
+            count[0]++;
+            i++;
+        }
     }
 }
