@@ -3,32 +3,23 @@ package model;
 
 import java.time.LocalDate;
 
-public abstract class Task {
-    String title;
-    String body;
+public  class Task {
+    String content;
     LocalDate date;
 
-    public String getTitle() {
-        return title;
+    public Task(String content, LocalDate date) {
+        this.content = content;
+        this.date = date;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public Task() {
     }
 
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
+    public String getContent() {
+        return content;
     }
 
     public LocalDate getDate() {
         return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
     }
 }

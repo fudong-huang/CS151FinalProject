@@ -10,10 +10,10 @@ import java.util.concurrent.BlockingQueue;
 public class View extends JFrame{
     private JFrame frame;
     private BlockingQueue<Message> queue;
-    private JPanel panel;
     private LocalDate date;
     private LocalDate selectedDate;
-    // count for the calendar button;
+    private ToDoListView toDoListView;
+    private String inputStr;
 
 
     public static View init(BlockingQueue<Message> queue,LocalDate date) {
@@ -25,6 +25,10 @@ public class View extends JFrame{
         this.date = date;
         this.queue = queue;
         this.frame = new JFrame();
+        this.inputStr = "";
+
+        frame.setLayout(new GridBagLayout());
+
         selectedDate = date;
         paint();
         frame.pack();
@@ -33,18 +37,6 @@ public class View extends JFrame{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
-
-
-    public void change() {
-        // TODO: do all the updates and repaint
-        //gameFrame.repaint();
-    }
-
-    public void dispose() {
-        // TODO: clear all the resources
-        // for example, gameFrame.dispose();
-    }
-
 
     private void printTitle(JPanel calPanel) {
         for (DayOfWeek dayOfWeek : DayOfWeek.values()) {
@@ -117,7 +109,7 @@ public class View extends JFrame{
     }
 
     public void update(LocalDate date) {
-       frame.getContentPane().removeAll();
+        frame.getContentPane().removeAll();
         this.date = date;
         paint();
         System.out.println("calling repaint");
@@ -126,7 +118,7 @@ public class View extends JFrame{
     }
 
     private void paint() {
-        frame.setLayout(new GridBagLayout());
+
         GridBagConstraints c = new GridBagConstraints();
         JButton prevMonth = new JButton("Prev");
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -186,5 +178,26 @@ public class View extends JFrame{
         c.insets = new Insets(30,0,0,0);
         frame.add(calPanel, c);
     }
+        public void createTodoList() {
+            toDoListView.init(this);
+        }
 
+        public void updateTodoListView(Model model) {
+            toDoListView.update(model);
+        }
+        public LocalDate getSelectedDate() {
+            return this.selectedDate;
+        }
+
+        public BlockingQueue<Message> getQueue() {
+            return this.queue;
+        }
+
+        public void setInputStr(String str) {
+            this.inputStr = str;
+        }
+
+        public String getInputStr() {
+            return this.inputStr;
+        }
 }

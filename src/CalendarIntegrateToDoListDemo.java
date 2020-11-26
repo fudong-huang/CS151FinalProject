@@ -1,6 +1,7 @@
 import controller.Controller;
 import model.Message;
 import model.Model;
+import model.ToDoList;
 import view.View;
 
 import java.time.LocalDate;
@@ -15,7 +16,7 @@ class CalendarIntegrateToDoListDemo {
 
     public static void main(String[] args) throws InterruptedException {
         view = View.init(queue, LocalDate.now());
-        model = new Model();
+        model = new Model(new ToDoList());
         Controller controller = new Controller(view, model, queue);
         controller.mainLoop();
         System.out.println(123);

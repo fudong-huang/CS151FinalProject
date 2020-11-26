@@ -1,9 +1,7 @@
 package controller;
 
-import model.Message;
-import model.Model;
-import model.NextMonthMessage;
-import model.PrevMonthMessage;
+import model.*;
+import view.ToDoListView;
 import view.View;
 
 import java.time.LocalDate;
@@ -49,6 +47,13 @@ public class Controller {
             date = date.plusMonths(1);
             System.out.println(date.toString());
             view.update(date);
+        } else if (message instanceof ToDoListMessage) {
+            System.out.println("To Do list");
+            view.createTodoList();
+        } else if (message instanceof SaveToDoListMessage) {
+           Task task = new Task(view.getInputStr(), view.getLocalDate());
+           model.getToDoList().addTodoTask(task);
+           view.updateTodoListView(model);
         }
     }
 }
