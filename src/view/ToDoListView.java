@@ -1,10 +1,6 @@
 package view;
 
-import model.Message;
-
-import model.Model;
-import model.SaveToDoListMessage;
-import model.Task;
+import model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,22 +11,16 @@ public class ToDoListView extends JFrame {
     private JFrame frame;
     private View view;
     private BlockingQueue<Message> queue;
-    private  Model model;
+    private Model model;
+
 
     public ToDoListView(View view) {
         this.frame = new JFrame();
         this.view = view;
         this.queue = view.getQueue();
         this.model = new Model();
-        Task t1 = new Task("aaa", view.getLocalDate());
-        Task t2 = new Task("bbb", view.getLocalDate());
-        Task t3 = new Task("ccc", view.getLocalDate());
-        model.getToDoList().addTodoTask(t1);
-        model.getToDoList().addTodoTask(t2);
-        model.getToDoList().addTodoTask(t3);
         addComponentsToPane(frame.getContentPane());
         frame.pack();
-
         frame.setTitle("ToDoList");
         frame.setSize(600,400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,14 +34,21 @@ public class ToDoListView extends JFrame {
 
         JPanel jPanel1 = new JPanel();
         JLabel title = new JLabel("ToDoTasks");
-        //jPanel1.setSize(400,400);
+
         jPanel1.add(title);
         for (Task task : model.getToDoList().getToDoTaskList()) {
-            JCheckBox jCheckBox = new JCheckBox();
-            JLabel jLabel = new JLabel(task.getContent());
+            JCheckBox jCheckBox = new JCheckBox(task.getContent());
             System.out.println(task.getContent());
+            jCheckBox.addActionListener(event -> {
+                try {
+                    queue.put(new AddFinishedTaskMessage());
+                    model.getToDoList().setSelectedTask(task);
+                    System.out.println("print select task: " + task.getContent().toString());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
             jPanel1.add(jCheckBox);
-            jPanel1.add(jLabel);
         }
 
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -79,7 +76,6 @@ public class ToDoListView extends JFrame {
 
         JPanel jPanel3 = new JPanel();
         jPanel3.setSize(50,50);
-        //c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 5;
         JLabel date = new JLabel(view.getSelectedDate().toString());
@@ -93,9 +89,10 @@ public class ToDoListView extends JFrame {
         JButton jButton = new JButton("save");
         jButton.addActionListener(event ->{
             try {
-                queue.put(new SaveToDoListMessage()); // <--- adding NewGame message to the queue
                 System.out.println("qsize: " + queue.size() );
+                System.out.println("jTextField.getText(): " + jTextField.getText());
                 view.setInputStr(jTextField.getText());
+                queue.put(new SaveToDoListMessage()); // <--- adding NewGame message to the queue
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -110,6 +107,13 @@ public class ToDoListView extends JFrame {
     }
 
     public void update(Model model) {
-
+        frame.getContentPane().removeAll();
+        this.model = model;
+        addComponentsToPane(frame.getContentPane());
+        System.out.println("calling repaint at todolist view");
+        frame.getContentPane().revalidate();
+        frame.repaint();
     }
+
+
 }

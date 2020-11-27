@@ -52,8 +52,11 @@ public class Controller {
             view.createTodoList();
         } else if (message instanceof SaveToDoListMessage) {
            Task task = new Task(view.getInputStr(), view.getLocalDate());
+           System.out.println("printing task str" + task.getContent());
            model.getToDoList().addTodoTask(task);
            view.updateTodoListView(model);
+        } else if (message instanceof  AddFinishedTaskMessage) {
+
         }
     }
 }

@@ -6,15 +6,12 @@ import java.util.List;
 public class ToDoList {
     List<Task> toDoTaskList;
     List<Task> finishedTaskList;
-
-    public ToDoList(List<Task> toDoTaskList, List<Task> finishedTaskList) {
-        this.toDoTaskList = toDoTaskList;
-        this.finishedTaskList = finishedTaskList;
-    }
+    private Task selectedTask;
 
     public ToDoList() {
         this.toDoTaskList = new ArrayList<>();
         this.finishedTaskList = new ArrayList<>();
+        this.selectedTask = new Task();
     }
 
     public List<Task> getToDoTaskList() {
@@ -35,5 +32,13 @@ public class ToDoList {
 
     public void removeTodoTask(Task task) {
         toDoTaskList.remove(task);
+    }
+
+    public Task getSelectedTask() {
+        return this.selectedTask;
+    }
+
+    public void setSelectedTask(Task task) {
+        this.selectedTask = task;
     }
 }

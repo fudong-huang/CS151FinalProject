@@ -25,7 +25,6 @@ public class View extends JFrame{
         this.date = date;
         this.queue = queue;
         this.frame = new JFrame();
-        this.inputStr = "";
         //toDoListView.init(this);
         frame.setLayout(new GridBagLayout());
 
