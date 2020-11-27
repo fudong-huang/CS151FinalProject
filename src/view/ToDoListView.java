@@ -41,9 +41,9 @@ public class ToDoListView extends JFrame {
             System.out.println(task.getContent());
             jCheckBox.addActionListener(event -> {
                 try {
-                    queue.put(new AddFinishedTaskMessage());
                     model.getToDoList().setSelectedTask(task);
                     System.out.println("print select task: " + task.getContent().toString());
+                    queue.put(new AddFinishedTaskMessage());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -61,12 +61,11 @@ public class ToDoListView extends JFrame {
         JPanel jPanel2 = new JPanel();
        // jPanel2.setSize(400,400);
         JLabel title2 = new JLabel("FinishedTask");
-
-        JCheckBox jCheckBox2 = new JCheckBox();
-        JLabel jLabel2 = new JLabel("bbb");
         jPanel2.add(title2);
-        jPanel2.add(jCheckBox2);
-        jPanel2.add(jLabel2);
+        for (Task task: model.getToDoList().getFinishedTaskList()) {
+            JLabel jLabel = new JLabel(task.getContent());
+            jPanel2.add(jLabel);
+        }
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0.5;
         c.gridx = 0;
@@ -89,8 +88,6 @@ public class ToDoListView extends JFrame {
         JButton jButton = new JButton("save");
         jButton.addActionListener(event ->{
             try {
-                System.out.println("qsize: " + queue.size() );
-                System.out.println("jTextField.getText(): " + jTextField.getText());
                 view.setInputStr(jTextField.getText());
                 queue.put(new SaveToDoListMessage()); // <--- adding NewGame message to the queue
             } catch (InterruptedException e) {

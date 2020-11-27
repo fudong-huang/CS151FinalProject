@@ -76,9 +76,9 @@ public class View extends JFrame{
             JButton button = new JButton(String.valueOf(firstDayOfMonth.getDayOfMonth()));
             button.addActionListener(event -> {
                 try {
-                    queue.put(new ToDoListMessage()); // <--- adding NewGame message to the queue
                     selectedDate = LocalDate.of(date.getYear(), date.getMonth(), Integer.parseInt(button.getText()));
                     System.out.println(selectedDate.toString());
+                    queue.put(new ToDoListMessage()); // <--- adding NewGame message to the queue
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -144,7 +144,6 @@ public class View extends JFrame{
         prevMonth.addActionListener(event -> {
             try {
                 this.queue.put(new PrevMonthMessage()); // <--- adding NewGame message to the queue
-                System.out.println("qsize: " + queue.size() );
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
