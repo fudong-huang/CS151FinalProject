@@ -17,11 +17,6 @@ public class ToDoListView extends JFrame {
     private BlockingQueue<Message> queue;
     private  Model model;
 
-    public static ToDoListView init(View view) {
-        // Create object of type view
-        return new ToDoListView(view);
-    }
-
     public ToDoListView(View view) {
         this.frame = new JFrame();
         this.view = view;

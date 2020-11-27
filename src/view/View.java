@@ -26,7 +26,7 @@ public class View extends JFrame{
         this.queue = queue;
         this.frame = new JFrame();
         this.inputStr = "";
-
+        //toDoListView.init(this);
         frame.setLayout(new GridBagLayout());
 
         selectedDate = date;
@@ -179,10 +179,11 @@ public class View extends JFrame{
         frame.add(calPanel, c);
     }
         public void createTodoList() {
-            toDoListView.init(this);
+            toDoListView = new ToDoListView(this);
         }
 
         public void updateTodoListView(Model model) {
+            if(toDoListView == null) toDoListView = new ToDoListView(this);
             toDoListView.update(model);
         }
         public LocalDate getSelectedDate() {
