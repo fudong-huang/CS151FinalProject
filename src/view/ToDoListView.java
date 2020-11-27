@@ -16,6 +16,7 @@ public class ToDoListView extends JFrame {
 
     public ToDoListView(View view) {
         this.frame = new JFrame();
+        frame.setBounds(800, 0, 450, 300);
         this.view = view;
         this.queue = view.getQueue();
         this.model = new Model();
@@ -25,7 +26,6 @@ public class ToDoListView extends JFrame {
         frame.setSize(600,400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-
     }
 
     private void addComponentsToPane(Container pane) {
@@ -37,18 +37,20 @@ public class ToDoListView extends JFrame {
 
         jPanel1.add(title);
         for (Task task : model.getToDoList().getToDoTaskList()) {
-            JCheckBox jCheckBox = new JCheckBox(task.getContent());
-            System.out.println(task.getContent());
-            jCheckBox.addActionListener(event -> {
-                try {
-                    model.getToDoList().setSelectedTask(task);
-                    System.out.println("print select task: " + task.getContent().toString());
-                    queue.put(new AddFinishedTaskMessage());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            });
-            jPanel1.add(jCheckBox);
+            if (task.getDate().equals(view.getSelectedDate())) {
+                JCheckBox jCheckBox = new JCheckBox(task.getContent());
+                System.out.println(task.getContent());
+                jCheckBox.addActionListener(event -> {
+                    try {
+                        model.getToDoList().setSelectedTask(task);
+                        System.out.println("print select task: " + task.getContent().toString());
+                        queue.put(new AddFinishedTaskMessage());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                });
+                jPanel1.add(jCheckBox);
+            }
         }
 
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -63,8 +65,10 @@ public class ToDoListView extends JFrame {
         JLabel title2 = new JLabel("FinishedTask");
         jPanel2.add(title2);
         for (Task task: model.getToDoList().getFinishedTaskList()) {
-            JLabel jLabel = new JLabel(task.getContent());
-            jPanel2.add(jLabel);
+            if (task.getDate().equals(view.getSelectedDate())) {
+                JLabel jLabel = new JLabel(task.getContent());
+                jPanel2.add(jLabel);
+            }
         }
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0.5;
