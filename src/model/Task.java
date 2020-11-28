@@ -22,4 +22,9 @@ public  class Task {
     public LocalDate getDate() {
         return date;
     }
+
+    public boolean equals(Task b) {
+        if (b == null) return false;
+        return (this.content.equals(b.content) && this.date.equals(b.getDate()));
+    }
 }

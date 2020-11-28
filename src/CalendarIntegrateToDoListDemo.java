@@ -2,7 +2,6 @@ import controller.Controller;
 import model.Message;
 import model.Model;
 import model.ToDoList;
-import view.ToDoListView;
 import view.View;
 
 import java.time.LocalDate;

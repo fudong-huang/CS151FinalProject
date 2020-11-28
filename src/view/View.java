@@ -5,6 +5,7 @@ import model.*;
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 
 public class View extends JFrame{
@@ -14,7 +15,8 @@ public class View extends JFrame{
     private LocalDate selectedDate;
     private ToDoListView toDoListView;
     private String inputStr;
-
+    private ArrayList<String> frontColorList;
+    private JButton selectedButton;
 
     public static View init(BlockingQueue<Message> queue,LocalDate date) {
         // Create object of type view
@@ -27,8 +29,9 @@ public class View extends JFrame{
         this.frame = new JFrame();
         //toDoListView.init(this);
         frame.setLayout(new GridBagLayout());
-
-        selectedDate = date;
+        frontColorList = new ArrayList<>();
+        selectedDate = null;
+        selectedButton = null;
         paint();
         frame.pack();
         frame.setTitle("Calendar&ToDoList");
@@ -69,15 +72,25 @@ public class View extends JFrame{
     }
 
 
+    public JButton getSelectedButton() {
+        return selectedButton;
+    }
+
     private void printDate(JPanel jPanel, LocalDate date, int[] count) {
         LocalDate firstDayOfMonth = LocalDate.of(date.getYear(), date.getMonth(), 1);
         int curMonth = date.getMonthValue();
         while (curMonth == firstDayOfMonth.getMonthValue()) {
             JButton button = new JButton(String.valueOf(firstDayOfMonth.getDayOfMonth()));
+            if (firstDayOfMonth.equals(LocalDate.now())) {
+                button.setForeground(Color.RED);
+            }
+            if (firstDayOfMonth.equals(selectedDate)) {
+                button.setForeground(Color.BLUE);
+            }
             button.addActionListener(event -> {
                 try {
                     selectedDate = LocalDate.of(date.getYear(), date.getMonth(), Integer.parseInt(button.getText()));
-                    System.out.println(selectedDate.toString());
+                    selectedButton = button;
                     queue.put(new ToDoListMessage()); // <--- adding NewGame message to the queue
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -126,7 +139,9 @@ public class View extends JFrame{
         c.gridy = 0;
         frame.add(prevMonth, c);
 
-        JButton curMonth = new JButton(date.getMonth().getValue() + "-" + date.getDayOfMonth() + "-" + date.getYear());
+        JLabel curMonth = new JLabel(date.getMonth().getValue() + "-" + date.getDayOfMonth() + "-" + date.getYear());
+        curMonth.setHorizontalAlignment(JLabel.CENTER);
+        curMonth.setVerticalAlignment(JLabel.CENTER);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0.5;
         c.gridx = 1;
