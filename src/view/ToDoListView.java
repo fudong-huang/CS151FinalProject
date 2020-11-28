@@ -36,6 +36,7 @@ public class ToDoListView extends JFrame {
         JLabel title = new JLabel("ToDoTasks");
 
         jPanel1.add(title);
+
         for (Task task : model.getToDoList().getToDoTaskList()) {
             if (task.getDate().equals(view.getSelectedDate())) {
                 JCheckBox jCheckBox = new JCheckBox(task.getContent());
@@ -52,7 +53,6 @@ public class ToDoListView extends JFrame {
             }
         }
 
-        c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 5;
         c.weighty = 5;
         c.gridx = 0;
@@ -76,7 +76,8 @@ public class ToDoListView extends JFrame {
 
 
         JPanel jPanel3 = new JPanel();
-        jPanel3.setSize(50,50);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.ABOVE_BASELINE;
         c.gridx = 0;
         c.gridy = 5;
         JLabel date = new JLabel(view.getSelectedDate().toString());
@@ -92,7 +93,7 @@ public class ToDoListView extends JFrame {
             try {
                 view.setInputStr(jTextField.getText());
                 view.getSelectedButton().setForeground(Color.BLUE);
-                queue.put(new SaveToDoListMessage()); // <--- adding NewGame message to the queue
+                queue.put(new SaveToDoListMessage());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

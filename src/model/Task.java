@@ -3,6 +3,11 @@ package model;
 
 import java.time.LocalDate;
 
+
+/**
+ * Task class
+ */
+
 public  class Task {
     String content;
     LocalDate date;

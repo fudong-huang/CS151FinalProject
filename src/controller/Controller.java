@@ -1,7 +1,7 @@
 package controller;
 
 import model.*;
-import view.ToDoListView;
+
 import view.View;
 
 import java.time.LocalDate;
@@ -12,13 +12,18 @@ public class Controller {
     private View view;
     private Model model;
 
-
+    /**
+     * Initialize class
+     */
     public Controller(View view, Model model, BlockingQueue<Message> queue) {
         this.view = view;
         this.model = model;
         this.queue = queue;
     }
 
+    /**
+     * mainLoop for listening the queue
+     */
     public void mainLoop() throws InterruptedException
     {
         Message message = null;
@@ -34,6 +39,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Execute the message
+     */
     public void execute(Message message) {
         if (message instanceof PrevMonthMessage) {
             System.out.println("prevMonth");

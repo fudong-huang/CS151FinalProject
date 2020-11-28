@@ -7,6 +7,9 @@ import java.awt.event.ActionEvent;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ *  NewListener class
+ */
 public class NewListener implements ActionListener{
 
     private BlockingQueue<Message> queue = new LinkedBlockingQueue<>();

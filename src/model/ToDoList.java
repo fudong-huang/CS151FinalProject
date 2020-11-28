@@ -2,7 +2,9 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * ToDoList class
+ */
 public class ToDoList {
     List<Task> toDoTaskList;
     List<Task> finishedTaskList;

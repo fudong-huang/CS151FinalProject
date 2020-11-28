@@ -3,6 +3,9 @@ package model;
 
 import java.time.LocalDate;
 
+/**
+ * Calendar class
+ */
 public class Calendar {
     private LocalDate firstDay;
     private LocalDate date;

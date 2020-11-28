@@ -10,7 +10,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Unit test for ToDoList class
+ */
 class ToDoListTest {
 
     ToDoList toDoList = new ToDoList();

@@ -7,7 +7,9 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
+/**
+ * Unit test for Calendar class
+ */
 class CalendarTest {
     Calendar calendar;
 

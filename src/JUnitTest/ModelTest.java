@@ -4,11 +4,11 @@ import model.Model;
 import model.ToDoList;
 import org.junit.jupiter.api.Test;
 
-
-import javax.swing.tree.TreeNode;
-
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit test for Model class
+ */
 class ModelTest {
 
     Model model = new Model();

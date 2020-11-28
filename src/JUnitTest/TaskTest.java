@@ -7,6 +7,9 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Unit test for Task class
+ */
 class TaskTest {
     String content = "testString";
     LocalDate date = LocalDate.now();

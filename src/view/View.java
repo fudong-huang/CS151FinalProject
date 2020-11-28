@@ -7,7 +7,9 @@ import java.awt.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
-
+/**
+ * View class
+ */
 public class View extends JFrame{
     private JFrame frame;
     private BlockingQueue<Message> queue;
@@ -22,12 +24,13 @@ public class View extends JFrame{
         // Create object of type view
         return new View(queue, date);
     }
-
+    /**
+     * Constructor
+     */
     private View(BlockingQueue<Message> queue, LocalDate date) {
         this.date = date;
         this.queue = queue;
         this.frame = new JFrame();
-        //toDoListView.init(this);
         frame.setLayout(new GridBagLayout());
         frontColorList = new ArrayList<>();
         selectedDate = null;
@@ -40,6 +43,9 @@ public class View extends JFrame{
         frame.setVisible(true);
     }
 
+    /**
+     * printTitle method to print the title
+     */
     private void printTitle(JPanel calPanel) {
         for (DayOfWeek dayOfWeek : DayOfWeek.values()) {
             String str = dayOfWeek.toString();
@@ -50,32 +56,33 @@ public class View extends JFrame{
         }
     }
 
+    /**
+     * printPrevMonth method to print the printPrevMonth
+     */
     private void printPrevMonth(JPanel jPanel, LocalDate date, int[] count) {
-        LocalDate firstDayOfMonth = LocalDate.of(date.getYear(), date.getMonth(), 1);
-        int firstDay = firstDayOfMonth.getDayOfWeek().getValue();
+        LocalDate currentDate = LocalDate.of(date.getYear(), date.getMonth(), 1);
+        int firstDay = currentDate.getDayOfWeek().getValue();
         if (firstDay != 7) {
             System.out.println(firstDay);
             for (int i = 0; i < firstDay; i++) {
-                firstDayOfMonth = firstDayOfMonth.minusDays(1);
+                currentDate = currentDate.minusDays(1);
             }
 
             for(int i = 0; i < firstDay; i++) {
-                JLabel label = new JLabel(Integer.toString(firstDayOfMonth.getDayOfMonth()));
+                JLabel label = new JLabel(Integer.toString(currentDate.getDayOfMonth()));
                 label.setForeground(Color.GRAY);
                 label.setHorizontalAlignment(JLabel.CENTER);
                 label.setVerticalAlignment(JLabel.CENTER);
                 jPanel.add(label);
-                firstDayOfMonth = firstDayOfMonth.plusDays(1);
+                currentDate = currentDate.plusDays(1);
                 count[0]++;
             }
         }
     }
 
-
-    public JButton getSelectedButton() {
-        return selectedButton;
-    }
-
+    /**
+     *  print the Date. and attach the event listeners
+     */
     private void printDate(JPanel jPanel, LocalDate date, int[] count) {
         LocalDate firstDayOfMonth = LocalDate.of(date.getYear(), date.getMonth(), 1);
         int curMonth = date.getMonthValue();
@@ -103,6 +110,10 @@ public class View extends JFrame{
         }
     }
 
+
+    /**
+     *  print next Month and set the color to gray
+     */
     private void printNextMonth(JPanel jPanel, LocalDate date, int[] count) {
         int i = 1;
         while (count[0] <= 35) {
@@ -116,21 +127,21 @@ public class View extends JFrame{
         }
     }
 
-    public LocalDate getLocalDate() {
-        return this.date;
-    }
-
+    /**
+     *  update the view
+     */
     public void update(LocalDate date) {
         frame.getContentPane().removeAll();
         this.date = date;
         paint();
-        System.out.println("calling repaint");
         frame.getContentPane().revalidate();
         frame.repaint();
     }
 
+    /**
+     *  paint the UI
+     */
     private void paint() {
-
         GridBagConstraints c = new GridBagConstraints();
         JButton prevMonth = new JButton("Prev");
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -183,7 +194,6 @@ public class View extends JFrame{
         c.fill = GridBagConstraints.HORIZONTAL;
         c.ipady = 0;
         c.weightx = 5;
-        //c.weighty = 5;
         c.gridwidth = 3;
         c.gridx = 0;
         c.gridy = 5;
@@ -191,27 +201,69 @@ public class View extends JFrame{
         c.insets = new Insets(30,0,0,0);
         frame.add(calPanel, c);
     }
-        public void createTodoList() {
-            toDoListView = new ToDoListView(this);
-        }
 
-        public void updateTodoListView(Model model) {
-            if(toDoListView == null) toDoListView = new ToDoListView(this);
-            toDoListView.update(model);
-        }
-        public LocalDate getSelectedDate() {
+    /**
+     *  create todolist
+     */
+    public void createTodoList() { toDoListView = new ToDoListView(this); }
+
+    /**
+     *  update todolist View
+     */
+    public void updateTodoListView(Model model) {
+        if(toDoListView == null) toDoListView = new ToDoListView(this);
+        toDoListView.update(model);
+    }
+
+    /**
+     *  get SelectedDate
+     */
+    public LocalDate getSelectedDate() {
             return this.selectedDate;
         }
 
-        public BlockingQueue<Message> getQueue() {
+    /**
+     *  get Queue
+     */
+    public BlockingQueue<Message> getQueue() {
             return this.queue;
         }
 
-        public void setInputStr(String str) {
+    /**
+     *  set InputStr
+     */
+    public void setInputStr(String str) {
             this.inputStr = str;
         }
 
-        public String getInputStr() {
+    /**
+     *  get InputStr
+     */
+    public String getInputStr() {
             return this.inputStr;
         }
+
+    public JButton getSelectedButton() {
+        return selectedButton;
+    }
+
+    public JFrame getFrame() {
+        return frame;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public ToDoListView getToDoListView() {
+        return toDoListView;
+    }
+
+    public ArrayList<String> getFrontColorList() {
+        return frontColorList;
+    }
+
+    public LocalDate getLocalDate() {
+        return this.date;
+    }
 }

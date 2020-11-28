@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * DayOfWeek
+ */
 public enum DayOfWeek {
     Sun,
     Mon,

@@ -1,7 +1,9 @@
 package model;
 
-import java.util.Date;
 
+/**
+ * Model class
+ */
 public class Model {
     ToDoList toDoList;
 
