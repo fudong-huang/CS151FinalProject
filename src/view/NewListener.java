@@ -14,10 +14,18 @@ public class NewListener implements ActionListener{
 
     private BlockingQueue<Message> queue = new LinkedBlockingQueue<>();
 
+    /**
+     * Constructor
+     * @param queue LinkedBlockingQueue
+     */
     public NewListener(BlockingQueue<Message> queue) {
         this.queue = queue;
     }
 
+    /**
+     * Override actionPerformed method
+     * @param event ActionEvent
+     */
     @Override
     public void actionPerformed(ActionEvent event) {
         try {

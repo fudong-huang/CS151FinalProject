@@ -7,6 +7,10 @@ package model;
 public class Model {
     ToDoList toDoList;
 
+    /**
+     * Constructor
+     * @param toDoList A ToDoList
+     */
     public Model(ToDoList toDoList) {
         this.toDoList = toDoList;
     }
@@ -15,6 +19,10 @@ public class Model {
         this.toDoList = new ToDoList();
     }
 
+    /**
+     * get todolist
+     * @return ToDOList
+     */
     public ToDoList getToDoList() {
         return toDoList;
     }

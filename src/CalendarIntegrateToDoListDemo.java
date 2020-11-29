@@ -9,10 +9,15 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 class CalendarIntegrateToDoListDemo {
-
     private static BlockingQueue<Message> queue = new LinkedBlockingQueue<>();
     private static View view;
     private static Model model;
+
+    /**
+     * main method
+     * @param args
+     * @throws InterruptedException
+     */
     public static void main(String[] args) throws InterruptedException {
         model = new Model(new ToDoList());
         view = View.init(queue, LocalDate.now());

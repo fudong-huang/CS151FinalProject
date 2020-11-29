@@ -7,8 +7,9 @@ import java.awt.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
+
 /**
- * View class
+ *
  */
 public class View extends JFrame{
     private JFrame frame;
@@ -17,22 +18,23 @@ public class View extends JFrame{
     private LocalDate selectedDate;
     private ToDoListView toDoListView;
     private String inputStr;
-    private ArrayList<String> frontColorList;
     private JButton selectedButton;
 
     public static View init(BlockingQueue<Message> queue,LocalDate date) {
         // Create object of type view
         return new View(queue, date);
     }
+
     /**
      * Constructor
+     * @param queue LinkedBlockingQueue for the producer and consumer
+     * @param date  Date class
      */
     private View(BlockingQueue<Message> queue, LocalDate date) {
         this.date = date;
         this.queue = queue;
         this.frame = new JFrame();
         frame.setLayout(new GridBagLayout());
-        frontColorList = new ArrayList<>();
         selectedDate = null;
         selectedButton = null;
         paint();
@@ -44,7 +46,8 @@ public class View extends JFrame{
     }
 
     /**
-     * printTitle method to print the title
+     * Print title method
+     * @param calPanel Jpanel
      */
     private void printTitle(JPanel calPanel) {
         for (DayOfWeek dayOfWeek : DayOfWeek.values()) {
@@ -57,7 +60,10 @@ public class View extends JFrame{
     }
 
     /**
-     * printPrevMonth method to print the printPrevMonth
+     * Print the date of  previous month
+     * @param jPanel Main Jpanel
+     * @param date  Date
+     * @param count count how many dates have been printed
      */
     private void printPrevMonth(JPanel jPanel, LocalDate date, int[] count) {
         LocalDate currentDate = LocalDate.of(date.getYear(), date.getMonth(), 1);
@@ -81,7 +87,10 @@ public class View extends JFrame{
     }
 
     /**
-     *  print the Date. and attach the event listeners
+     * Print the date of  current month
+     * @param jPanel Main Jpanel
+     * @param date  Date
+     * @param count count how many dates have been printed
      */
     private void printDate(JPanel jPanel, LocalDate date, int[] count) {
         LocalDate firstDayOfMonth = LocalDate.of(date.getYear(), date.getMonth(), 1);
@@ -112,7 +121,10 @@ public class View extends JFrame{
 
 
     /**
-     *  print next Month and set the color to gray
+     * Print the date of  next month
+     * @param jPanel Main Jpanel
+     * @param date  Date
+     * @param count count how many dates have been printed
      */
     private void printNextMonth(JPanel jPanel, LocalDate date, int[] count) {
         int i = 1;
@@ -128,7 +140,8 @@ public class View extends JFrame{
     }
 
     /**
-     *  update the view
+     * Update the view
+     * @param date date
      */
     public void update(LocalDate date) {
         frame.getContentPane().removeAll();
@@ -139,7 +152,7 @@ public class View extends JFrame{
     }
 
     /**
-     *  paint the UI
+     * paint the UI
      */
     private void paint() {
         GridBagConstraints c = new GridBagConstraints();
@@ -203,7 +216,7 @@ public class View extends JFrame{
     }
 
     /**
-     *  create todolist
+     * create todolist
      */
     public void createTodoList() { toDoListView = new ToDoListView(this); }
 
@@ -243,26 +256,42 @@ public class View extends JFrame{
             return this.inputStr;
         }
 
+    /**
+     * get selected button
+     * @return selected JButton
+     */
     public JButton getSelectedButton() {
         return selectedButton;
     }
 
+    /**
+     * get frame
+     * @return current frame
+     */
     public JFrame getFrame() {
         return frame;
     }
 
+    /**
+     * get current date
+     * @return current date
+     */
     public LocalDate getDate() {
         return date;
     }
 
+    /**
+     * get todolist view
+     * @return todolist view
+     */
     public ToDoListView getToDoListView() {
         return toDoListView;
     }
 
-    public ArrayList<String> getFrontColorList() {
-        return frontColorList;
-    }
-
+    /**
+     * Get local date
+     * @return local date
+     */
     public LocalDate getLocalDate() {
         return this.date;
     }

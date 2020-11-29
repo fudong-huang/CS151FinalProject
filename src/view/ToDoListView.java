@@ -6,14 +6,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.BlockingQueue;
 
-
+/**
+ * A new frame that shows the ToDoList UI
+ */
 public class ToDoListView extends JFrame {
     private JFrame frame;
     private View view;
     private BlockingQueue<Message> queue;
     private Model model;
 
-
+    /**
+     * Constructor
+     * @param view
+     */
     public ToDoListView(View view) {
         this.frame = new JFrame();
         frame.setBounds(800, 0, 450, 300);
@@ -28,6 +33,10 @@ public class ToDoListView extends JFrame {
         frame.setVisible(true);
     }
 
+    /**
+     * Add some components to pane
+     * @param pane a pane of container
+     */
     private void addComponentsToPane(Container pane) {
         frame.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -107,6 +116,10 @@ public class ToDoListView extends JFrame {
         pane.add(jPanel4, c);
     }
 
+    /**
+     * update the view
+     * @param model the date model to paint
+     */
     public void update(Model model) {
         frame.getContentPane().removeAll();
         this.model = model;
